@@ -105,12 +105,11 @@ if [[ "$os_version" == "10" ]]; then
     if ! crontab -l 2>/dev/null | grep -q "Cubotino_T_bash.sh"; then
         (crontab -l 2>/dev/null;\
         echo -e 'MAILTO=""';\
-        echo -e '@reboot su - pi -c "/usr/bin/vncserver :0 -geometry 1280x720\"';\
+        echo -e '@reboot su - pi -c "/usr/bin/vncserver :0 -geometry 1280x720"';\
         echo -e '#@reboot su - pi -c "/usr/bin/vncserver :0 -geometry 1920x1080"';\
         echo -e '#@reboot /bin/sleep 5; bash -l /home/pi/cubotino/src/Cubotino_T_bash.sh > /home/pi/cubotino/src/Cubotino_T_terminal.log 2>&1')\
         | crontab -
     fi
-
 
 
 # ##################################### RASPBIAN 11 specific #######################################
@@ -145,13 +144,24 @@ elif [[ "$os_version" == "11" ]]; then
     fi
 
 
-
 # ##################################### RASPBIAN <10 | RASPBIAN >11 ###############################
 else
     print_header "the setup.sh file does not handle $os_version"
 fi
 
+# Feetech-Servo-SDK Installation
+print_header "Installing Feetech-Servo-SDK (SC15 Bus Servo) in src/feetech-sdk"
+SDK_DIR="src/feetech-sdk"
 
+if [ ! -d "$SDK_DIR" ]; then
+    git clone https://github.com/Adam-Software/Feetech-Servo-SDK.git "$SDK_DIR"
+else
+    echo "Feetech-Servo-SDK ist bereits installiert."
+fi
+
+if [ -f "$SDK_DIR/requirements.txt" ]; then
+    pip install -r "$SDK_DIR/requirements.txt"
+fi
 
 # ##################################### last part (common) ########################################
 print_header "Configuring pigpiod to start on boot"
@@ -159,5 +169,3 @@ systemctl enable pigpiod
 
 print_header "Reboot now? (y lowercase to confirm)"
 read x && [[ "$x" == "y" ]] && /sbin/reboot;
-
-
