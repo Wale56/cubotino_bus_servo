@@ -151,7 +151,7 @@ fi
 
 # Feetech-Servo-SDK Installation
 print_header "Installing Feetech-Servo-SDK (SC15 Bus Servo) in src/feetech-sdk"
-SDK_DIR="src/feetech-sdk"
+SDK_DIR="feetech-sdk"
 
 if [ ! -d "$SDK_DIR" ]; then
     git clone https://github.com/Adam-Software/Feetech-Servo-SDK.git "$SDK_DIR"
