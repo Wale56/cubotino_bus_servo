@@ -160,6 +160,7 @@ else
 fi
 
 if [ -f "$SDK_DIR/requirements.txt" ]; then
+    source /home/pi/cubotino/src/.virtualenvs/bin/activate
     pip install -r "$SDK_DIR/requirements.txt"
 fi
 
